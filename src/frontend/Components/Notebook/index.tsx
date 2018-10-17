@@ -1,4 +1,5 @@
 import * as React from 'react';
+import SplitPane from 'react-split-pane';
 import cx from 'classnames';
 import { AllHtmlEntities as Entities } from 'html-entities';
 import Convert from 'ansi-to-html';
@@ -135,37 +136,36 @@ export default class NotebookComponent extends React.Component<Props, State> {
                             <button className="bigbutton" onClick={() => document.location.href = homeurl}>Home&nbsp;&nbsp;🏠</button>
                         </div>
                     </div>
-                    <div id="left">
-                        <div id="code">
-                            <CM
-                                value={notebook.content}
-                                options={{
-                                    mode: notebook.recipe.cmmode,
-                                    theme: 'monokai',
-                                    lineNumbers: true,
-                                    lineWrapping: true,
-                                    styleActiveLine: true,
-                                    matchBrackets: true,
-                                    indentUnit: 4,
-                                    scrollPastEnd: true,
-                                    keyMap: 'sublime',
+                    <div id="bottom">
+                        <SplitPane defaultSize="60%">
+                            <div id="code" className="split">
+                                    <CM
+                                        value={notebook.content}
+                                        options={{
+                                            mode: notebook.recipe.cmmode,
+                                            theme: 'monokai',
+                                            lineNumbers: true,
+                                            lineWrapping: true,
+                                            styleActiveLine: true,
+                                            matchBrackets: true,
+                                            indentUnit: 4,
+                                            scrollPastEnd: true,
+                                            keyMap: 'sublime',
 
-                                    extraKeys: {
-                                        "Tab": (cm) => cm.execCommand("indentMore"),
-                                        "Shift-Tab": (cm) => cm.execCommand("indentLess"),
-                                        "Cmd-Enter": (cm) => {},
-                                    }
-                                }}
-                                onChange={(_, __, value) => {
-                                    this.editorvalue = value;
-                                    debouncedPersist(notebook, value);
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <div id="gutter"></div>
-                    <div id="right">
-                        <div id="console" ref={el => this.console = el}></div>
+                                            extraKeys: {
+                                                "Tab": (cm) => cm.execCommand("indentMore"),
+                                                "Shift-Tab": (cm) => cm.execCommand("indentLess"),
+                                                "Cmd-Enter": (cm) => {},
+                                            }
+                                        }}
+                                        onChange={(_, __, value) => {
+                                            this.editorvalue = value;
+                                            debouncedPersist(notebook, value);
+                                        }}
+                                    />
+                                </div>
+                            <div id="console" className="split" ref={el => this.console = el}></div>
+                        </SplitPane>
                     </div>
                 </div>
             </div>

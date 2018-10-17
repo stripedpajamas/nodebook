@@ -26,6 +26,7 @@
     "globby": "^8.0.1",
     "minimist": "^1.2.0",
     "project-name-generator": "^2.1.5",
+    "react-split-pane": "^0.1.84",
     "recursive-copy": "^2.0.9",
     "title-case": "^2.1.1",
     "tree-kill": "^1.2.0",
