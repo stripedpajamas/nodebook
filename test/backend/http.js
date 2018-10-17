@@ -3,8 +3,8 @@ const chaiHttp = require('chai-http');
 const portfinder = require('portfinder');
 const { dirname, resolve } = require('path');
 
-const { app } = require('../../src/backend/app');
-const { buildUrl } = require('../../src/backend/buildurl');
+const { app } = require('../../dist/nodejs/backend/app');
+const { buildUrl } = require('../../dist/nodejs/backend/buildurl');
 
 chai.use(chaiHttp);
 
@@ -72,7 +72,7 @@ describe('http service', function () {
                 expect(err).eq(null);
                 expect(res).has.status(200);
 
-                expect(res.text).matches(/route\s?=\s?"notebook"/g);
+                expect(res.text).matches(/e\s?=\s?"notebook"/g);
                 expect(res.text).contains('"content":"console.log(\'Hello, World!\');"');
 
                 expect(res.text).contains(validNotebook);
