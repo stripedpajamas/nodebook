@@ -26,15 +26,16 @@
     "compression": "^1.7.3",
     "dockerode": "^2.5.6",
     "dotenv": "^6.0.0",
+    "event-stream": "3.3.4",
     "express": "^4.16.3",
     "globby": "^8.0.1",
     "minimist": "^1.2.0",
     "project-name-generator": "^2.1.5",
+    "react-monaco-editor": "^0.26.2",
     "recursive-copy": "^2.0.9",
     "title-case": "^2.1.1",
     "tree-kill": "^1.2.0",
-    "trunk": "^1.1.0",
-    "event-stream": "3.3.4"
+    "trunk": "^1.1.0"
   },
   "devDependencies": {
     "@types/chokidar": "^1.7.5",

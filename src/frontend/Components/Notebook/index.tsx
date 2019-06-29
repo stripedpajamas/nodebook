@@ -2,39 +2,7 @@ import * as React from 'react';
 import cx from 'classnames';
 import { AllHtmlEntities as Entities } from 'html-entities';
 import Convert from 'ansi-to-html';
-
-import {UnControlled as CodeMirror} from 'react-codemirror2'
-const CM = CodeMirror as any;
-
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/monokai.css';
-
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/clike/clike';
-import 'codemirror/mode/go/go';
-import 'codemirror/mode/haskell/haskell';
-import 'codemirror/mode/lua/lua';
-import 'codemirror/mode/mllike/mllike';
-import 'codemirror/mode/php/php';
-import 'codemirror/mode/python/python';
-import 'codemirror/mode/r/r';
-import 'codemirror/mode/ruby/ruby';
-import 'codemirror/mode/rust/rust';
-import 'codemirror/mode/swift/swift';
-import 'codemirror/mode/swift/swift';
-import 'codemirror-mode-elixir';
-
-import 'codemirror/keymap/sublime';
-
-import 'codemirror/addon/selection/active-line';
-import 'codemirror/addon/edit/matchbrackets';
-import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/addon/scroll/annotatescrollbar';
-import 'codemirror/addon/search/matchesonscrollbar';
-import 'codemirror/addon/search/searchcursor';
-import 'codemirror/addon/search/match-highlighter';
-import 'codemirror/addon/fold/indent-fold';
-import 'codemirror/addon/scroll/scrollpastend';
+import MonacoEditor from 'react-monaco-editor';
 
 import { Notebook } from "../../types";
 import "./style.scss";
@@ -98,7 +66,6 @@ export default class NotebookComponent extends React.Component<Props, State> {
 
     componentDidMount() {
 
-        let i = 0;
         this.commWorker = new Worker('worker.ts');
         this.commWorker.onmessage = (e: MessageEvent) => {
             switch(e.data.action) {
@@ -159,6 +126,11 @@ export default class NotebookComponent extends React.Component<Props, State> {
         }
     }
 
+    editorDidMount(editor) {
+        console.log('editorDidMount', editor);
+        editor.focus();
+    }
+
     render() {
         const { notebook, homeurl } = this.props;
         const { autoclear, newname, running, codeWidth } = this.state;
@@ -197,7 +169,23 @@ export default class NotebookComponent extends React.Component<Props, State> {
                     </div>
                     <div id="left">
                         <div id="code">
-                            <CM
+                            <MonacoEditor
+                                width={window.innerWidth * (codeWidth / 100)}
+                                height={window.innerHeight - 50}
+                                value={notebook.content}
+                                language={notebook.recipe.cmmode}
+                                theme="vs-dark"
+                                options={{
+                                    scrollBeyondLastLine: false,
+                                    minimap: { enabled: false },
+                                    wordWrap: "on"
+                                }}
+                                onChange={(value) => {
+                                    this.editorvalue = value;
+                                    debouncedPersist(notebook, value);
+                                }}
+                            />
+                            {/* <CM
                                 value={notebook.content}
                                 options={{
                                     mode: notebook.recipe.cmmode,
@@ -220,7 +208,7 @@ export default class NotebookComponent extends React.Component<Props, State> {
                                     this.editorvalue = value;
                                     debouncedPersist(notebook, value);
                                 }}
-                            />
+                            /> */}
                         </div>
                     </div>
                     <div id="gutter" onMouseDown={this.boundHandleMouseDown}></div>
